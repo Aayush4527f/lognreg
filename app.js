@@ -28,3 +28,9 @@ mongoose.connect('mongodb://localhost:27017/jwtlogin', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
+
+
+// starting the server
+app.listen(PORT,()=>{
+    console.log(`server started at port ${PORT}`)
+})
