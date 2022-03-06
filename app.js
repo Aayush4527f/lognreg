@@ -10,10 +10,7 @@ const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose')
 const path = require('path')
 const User = require('./model/user')
-
-// OTHER CONSTS
 const app = express()
-const PORT = 80
 
 // SETTING UP COOKIE AND BODY PARSER
 app.use(cookieParser())
@@ -54,6 +51,6 @@ app.post('/login',(req,res)=>{
 })
 
 // starting the server
-app.listen(PORT,()=>{
-    console.log(`server started at port ${PORT}`)
+app.listen(process.env.PORT,()=>{
+    console.log(`server started at port ${process.env.PORT}`)
 })
