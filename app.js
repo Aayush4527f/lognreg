@@ -83,23 +83,18 @@ app.post('/register', async (req, res) => {
         throw error
     }
 })
-app.post('/login', async(req, res) => {
-    // const { username, password } = req.body
-    // const user = await User.findOne({ username }).lean()
+app.post('/login', async (req, res) => {
+    const { username, password } = req.body;
 
-    // if (!user) {
-    //     return res.send('Invalid username/password')
-    // }
-
-    // if (await bcrypt.compare(password, user.password)) {
-    //     // the username, password combination is successful
-
-    //     console.log(`succesful login`)
-
-    //     return res.redirect(`/`)
-    // }
-
-    // res.send('Invalid Username/Password');
+    const user = await User.findOne({ username }).lean()
+    console.log(user)
+    if (!user || !await bcrypt.compare(password, user.password)) {
+        return res.render('login.ejs')
+    } else if (await bcrypt.compare(password, user.password)) {
+        let token = jwt.sign({ "username": `${username}` }, process.env.access_token_secret, { expiresIn: "7d" })
+        res.cookie(`token`, `${token}`, { maxAge: (60 * 60 * 24 * 7) * 1000, secure: true })
+        return res.redirect('/')
+    }
 })
 
 // starting the server
