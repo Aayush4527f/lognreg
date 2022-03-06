@@ -39,10 +39,10 @@ app.get('/about',(req,res)=>{
     res.send('ABOUT')
 })
 app.get('/register',(req,res)=>{
-    res.send('REGISTER')
+    res.render('register.ejs')
 })
 app.get('/login',(req,res)=>{
-    res.send('LOGIN')
+    res.render('login.ejs')
 })
 
 // post requests
