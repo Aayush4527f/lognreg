@@ -43,8 +43,24 @@ app.get('/login',(req,res)=>{
 })
 
 // post requests
-app.post('/register',(req,res)=>{
-    res.send('REGISTER FORM')
+app.post('/register',async (req,res)=>{
+    const { username, password: textPassword } = req.body
+    const password = await bcrypt.hash(textPassword, 10)
+
+    try {
+        const response = await User.create({
+            username,
+            password
+        })
+        // console.log('User created successfully: ', response)
+        res.redirect(`/login`)
+    } catch (error) {
+        if (error.code === 11000) {
+            // duplicate key
+            return res.send('Username already in use')
+        }
+        throw error
+    }
 })
 app.post('/login',(req,res)=>{
     res.send('LOGIN FORM')
