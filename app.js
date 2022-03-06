@@ -30,22 +30,34 @@ mongoose.connect('mongodb://localhost:27017/jwtlogin', {
 
 // ENDPOINTS
 app.get('/', (req, res) => {
-    res.send('HOME')
+    try {
+        jwt.verify(req.cookies.token, process.env.access_token_secret)
+        res.render('home.ejs')
+    } catch (error) {
+        console.log(error.message)
+        res.render('login.ejs')
+    }
 })
 app.get('/about', (req, res) => {
-    res.send('ABOUT')
+    try {
+        jwt.verify(req.cookies.token, process.env.access_token_secret)
+        res.render('about.ejs')
+    } catch (error) {
+        console.log(error.message)
+        res.render('login.ejs')
+    }
 })
 app.get('/register', (req, res) => {
     res.render('register.ejs')
 })
 app.get('/login', (req, res) => {
-    // try {
-    //     jwt.verify(req.cookies.token, process.env.access_token_secret)
-    //     res.redirect('/')
-    // } catch (error) {
-    //     console.log(error.message)
-    //     res.render('login.ejs')
-    // }
+    try {
+        jwt.verify(req.cookies.token, process.env.access_token_secret)
+        res.redirect('/')
+    } catch (error) {
+        console.log(error.message)
+        res.render('login.ejs')
+    }
 })
 
 // post requests
